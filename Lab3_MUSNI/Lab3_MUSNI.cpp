@@ -45,7 +45,47 @@ int main() {
                 }
             }
             
+            for (int i = 0; i < var - 1; i++) {
+                if (matrix[i][i] == 0) {
+                    cout << "Zero pivot encountered.\n";
+                    return 0;
+                }
+                for (int k = i + 1; k < var; k++) {
+                    double factor = matrix[k][i] / matrix[i][i];
+                    for (int j = i; j <= var; j++) {
+                        matrix[k][j] -= factor * matrix[i][j];
+                    }
+                }
+            }
+
+            // Normalize diagonals to 1
             for (int i = 0; i < var; i++) {
+                double pivot = matrix[i][i];
+                if (pivot != 0) {
+                    for (int j = i; j <= var; j++) {
+                        matrix[i][j] /= pivot;
+                    }
+                }
+            }
+
+            cout << "\nFinal Upper Triangular Matrix:\n";
+            for (int i = 0; i < var; i++) {
+                for (int j = 0; j <= var; j++) {
+                    cout << matrix[i][j] << "\t\t";
+                }
+                cout << "\n\n";
+            }
+
+            // Back Substitution
+            for (int i = var - 1; i >= 0; i--) {
+                double sum = matrix[i][var];
+                for (int j = i + 1; j < var; j++) {
+                    sum -= matrix[i][j] * solution[j];
+                }
+                solution[i] = sum;
+            }
+            simplify(matrix, var);
+            /*for (int i = 0; i < var; i++) {
                 int maxRow = i;
                 for (int k = i + 1; k < var; k++) {
                     if (fabs(matrix[k][i]) > fabs(matrix[maxRow][i])) {
@@ -93,7 +133,14 @@ int main() {
                 cout << "\n\n";
             }
 
-            simplify(matrix, var);
+            simplify(matrix, var);*/
+            /*for (int i = var - 1; i >= 0; i--) {
+                double sum = matrix[i][var];
+                for (int j = i + 1; j < var; j++) {
+                    sum -= matrix[i][j] * solution[j];
+                }
+                solution[i] = sum / matrix[i][i];
+            }*/
             break;
             
         case 2:
@@ -164,6 +211,13 @@ int main() {
             }
             
             simplify(matrix, var);
+            /*for (int i = var - 1; i >= 0; i--) {
+                double sum = matrix[i][var];
+                for (int j = i + 1; j < var; j++) {
+                    sum -= matrix[i][j] * solution[j];
+                }
+                solution[i] = sum / matrix[i][i];
+            }*/
             break;
             
         case 3:
